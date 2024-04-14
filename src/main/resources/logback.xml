@@ -1,0 +1,52 @@
+<configuration>
+    <property name="FILE_ROOT" value="C:\Users\shefe\IdeaProjects\Lvi\log"/>
+    <property name="FILE_NAME_INFO" value="info"/>
+    <property name="FILE_NAME_DEBUG" value="debug"/>
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern> %d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n </Pattern>
+        </encoder>
+    </appender>
+    <appender name="FILE-INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <file>${FILE_ROOT}/${FILE_NAME_INFO}.log</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern> %d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n </Pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!--  rollover daily  -->
+            <fileNamePattern>${FILE_ROOT}/archived/info/${FILE_NAME_INFO}.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <maxFileSize>500KB</maxFileSize>
+        </rollingPolicy>
+    </appender>
+    <appender name="FILE-DEBUG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>DEBUG</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <file>${FILE_ROOT}/${FILE_NAME_DEBUG}.log</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern> %d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n </Pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!--  rollover daily  -->
+            <fileNamePattern>${FILE_ROOT}/archived/debug/${FILE_NAME_DEBUG}.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <maxFileSize>500KB</maxFileSize>
+        </rollingPolicy>
+    </appender>
+    <root level="debug">
+        <appender-ref ref="FILE-INFO"/>
+        <appender-ref ref="FILE-DEBUG"/>
+        <appender-ref ref="CONSOLE"/>
+    </root>
+</configuration>

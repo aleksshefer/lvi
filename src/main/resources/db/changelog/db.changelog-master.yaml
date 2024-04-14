@@ -1,0 +1,128 @@
+databaseChangeLog:
+  - preConditions:
+      - runningAs:
+          username: lvidb
+
+  - changeSet:
+      id: init
+      author: shefer
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: SERIAL
+                  autoIncrement: true
+                  constraints:
+                    unique: true
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: user_name
+                  type: varchar(255)
+                  constraints:
+                    unique: false
+                    nullable: false
+              - column:
+                  name: user_surname
+                  type: varchar(255)
+                  constraints:
+                    unique: false
+                    nullable: false
+              - column:
+                  name: email
+                  type: varchar(255)
+                  constraints:
+                    unique: false
+                    nullable: false
+              - column:
+                  name: password
+                  type: varchar(255)
+                  constraints:
+                    unique: false
+                    nullable: false
+        - createTable:
+            tableName: topics
+            columns:
+              - column:
+                  name: id
+                  type: SERIAL
+                  autoIncrement: true
+                  constraints:
+                    unique: false
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: topic_name
+                  type: varchar(255)
+                  constraints:
+                    unique: false
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    unique: false
+                    nullable: false
+                    references: users(id)
+                    foreignKeyName: topics_user_id_fkey
+              - column:
+                  name: creation_date
+                  type: timestamp
+                  constraints:
+                    unique: false
+                    nullable: false
+        - createTable:
+            tableName: posts
+            columns:
+              - column:
+                  name: id
+                  type: SERIAL
+                  autoIncrement: true
+                  constraints:
+                    unique: true
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: topic_id
+                  type: bigint
+                  constraints:
+                    unique: false
+                    nullable: false
+                    references: topics(id)
+                    foreignKeyName: posts_topic_id_fkey
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    unique: false
+                    nullable: false
+                    references: users(id)
+                    foreignKeyName: posts_user_id_fkey
+              - column:
+                  name: post_text
+                  type: text
+                  constraints:
+                    unique: false
+                    nullable: true
+              - column:
+                  name: post_date
+                  type: timestamp
+                  constraints:
+                    unique: false
+                    nullable: false
+  - changeSet:
+      id: 1
+      author: shefer
+      changes:
+        - addColumn:
+            tableName: users
+            columns:
+              - column:
+                  name: role
+                  type: varchar(50)
+                  constraints:
+                    unique: false
+                    nullable: false
+                  defaultValue: user

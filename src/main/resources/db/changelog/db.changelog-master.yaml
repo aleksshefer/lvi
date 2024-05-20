@@ -122,7 +122,7 @@ databaseChangeLog:
               - column:
                   name: role
                   type: varchar(50)
+                  defaultValue: user
                   constraints:
                     unique: false
                     nullable: false
-                  defaultValue: user

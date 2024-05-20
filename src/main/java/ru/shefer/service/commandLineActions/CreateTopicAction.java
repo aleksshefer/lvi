@@ -1,13 +1,18 @@
 package ru.shefer.service.commandLineActions;
 
+import org.springframework.stereotype.Component;
 import ru.shefer.entity.Topic;
 import ru.shefer.service.TopicService;
 import ru.shefer.service.utilServices.CommandLineInputService;
 import ru.shefer.service.utilServices.CommandLineOutputService;
 import ru.shefer.service.utilServices.LoggedUserService;
 
+import java.time.Instant;
+import java.util.Date;
+
 import static ru.shefer.view.Constants.*;
 
+@Component
 public class CreateTopicAction extends Action {
     private final CommandLineInputService inputService;
     private final CommandLineOutputService outputService;
@@ -28,9 +33,10 @@ public class CreateTopicAction extends Action {
     @Override
     public void execute() {
         Topic topic = new Topic();
-        outputService.writeMessage(ENTER_TOPIC_NAME);
+        outputService.printMessage(ENTER_TOPIC_NAME);
         topic.setName(inputService.readLine());
-        topic.setAuthor();
-        outputService
+        topic.setAuthor(loggedUserService.getLoggedUser());
+        topic.setCreationDate(Date.from(Instant.now()));
+        topicService.save(topic);
     }
 }

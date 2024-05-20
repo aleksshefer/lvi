@@ -1,5 +1,6 @@
 package ru.shefer.service.commandLineActions;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import ru.shefer.entity.User;
 import ru.shefer.service.utilServices.CommandLineOutputService;
@@ -13,28 +14,33 @@ public class RegistrationAction extends Action {
     private final UserService userService;
     private final CommandLineInputService inputService;
     private final CommandLineOutputService outputService;
+    private final PasswordEncoder passwordEncoder;
 
-    public RegistrationAction(UserService userService, CommandLineInputService inputService, CommandLineOutputService outputService) {
-        actionName = REGISTER.getValue();
+    public RegistrationAction(UserService userService,
+                              CommandLineInputService inputService,
+                              CommandLineOutputService outputService,
+                              PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
         this.userService = userService;
         this.inputService = inputService;
         this.outputService = outputService;
+        actionName = REGISTER.getValue();
     }
 
     @Override
     public void execute() {
         User newUser = new User();
-        outputService.writeMessage(ENTER_USER_NAME);
+        outputService.printMessage(ENTER_USER_NAME);
         newUser.setName(inputService.readLine());
 
-        outputService.writeMessage(ENTER_USER_SURNAME);
+        outputService.printMessage(ENTER_USER_SURNAME);
         newUser.setSurname(inputService.readLine());
 
-        outputService.writeMessage(ENTER_EMAIL);
+        outputService.printMessage(ENTER_EMAIL);
         newUser.setEmail(inputService.readLine());
 
-        outputService.writeMessage(ENTER_PASSWORD);
-        newUser.setPassword(inputService.readLine());
+        outputService.printMessage(ENTER_PASSWORD);
+        newUser.setPassword(passwordEncoder.encode(inputService.readLine()));
 
         userService.saveUser(newUser);
     }

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Data
@@ -29,4 +30,10 @@ public class Post {
     @Column(name = "post_date", updatable = false)
     @CreationTimestamp
     private Date date;
+
+    public String customToString() {
+        return "Автор: " + author.getName() +
+                ", дата написания: " + new SimpleDateFormat("dd.MM.yyyy").format(date) +
+                ". \n" + text + "\n";
+    }
 }

@@ -12,7 +12,8 @@ public class UserPasswordHandler {
     private final PasswordEncoder passwordEncoder;
     private final CommandLineOutputService outputService;
 
-    public UserPasswordHandler(PasswordEncoder passwordEncoder, CommandLineOutputService outputService) {
+    public UserPasswordHandler(PasswordEncoder passwordEncoder,
+                               CommandLineOutputService outputService) {
         this.passwordEncoder = passwordEncoder;
         this.outputService = outputService;
     }
@@ -21,7 +22,7 @@ public class UserPasswordHandler {
         if (passwordEncoder.matches(passwordToCheck, user.getPassword())) {
             return true;
         } else {
-            outputService.writeMessage(WRONG_PASSWORD);
+            outputService.printMessage(WRONG_PASSWORD);
             return false;
         }
     }

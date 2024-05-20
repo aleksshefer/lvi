@@ -7,7 +7,6 @@ import ru.shefer.handler.UserPasswordHandler;
 import ru.shefer.service.utilServices.CommandLineOutputService;
 import ru.shefer.service.utilServices.CommandLineInputService;
 import ru.shefer.service.utilServices.LoggedUserService;
-import ru.shefer.service.UserService;
 
 import static ru.shefer.view.Constants.*;
 
@@ -19,7 +18,11 @@ public class LogInAction extends Action {
     private final UserDataHandler userDataHandler;
     private final LoggedUserService loggedUserService;
 
-    public LogInAction(CommandLineInputService inputService, CommandLineOutputService outputService, UserPasswordHandler userPasswordHandler, UserDataHandler userDataHandler, UserService userService, LoggedUserService loggedUserService) {
+    public LogInAction(CommandLineInputService inputService,
+                       CommandLineOutputService outputService,
+                       UserPasswordHandler userPasswordHandler,
+                       UserDataHandler userDataHandler,
+                       LoggedUserService loggedUserService) {
         this.inputService = inputService;
         this.outputService = outputService;
         this.userPasswordHandler = userPasswordHandler;
@@ -35,18 +38,19 @@ public class LogInAction extends Action {
         while (attempt != 0) {
             attempt--;
 
-            outputService.writeMessage(ENTER_EMAIL);
+            outputService.printMessage(ENTER_EMAIL);
             User userByEmail = userDataHandler.getUserByInputEmail(inputService.readLine());
             if (userByEmail == null) {
-                outputService.writeMessage(NUMBER_OF_ATTEMPTS, attempt);
+                outputService.printMessage(NUMBER_OF_ATTEMPTS, attempt);
                 continue;
             }
 
-            outputService.writeMessage(ENTER_PASSWORD);
+            outputService.printMessage(ENTER_PASSWORD);
             if (userPasswordHandler.checkUserPassword(inputService.readLine(), userByEmail)) {
                 loggedUserService.userLogIn(userByEmail);
+                break;
             } else {
-                outputService.writeMessage(NUMBER_OF_ATTEMPTS, attempt);
+                outputService.printMessage(NUMBER_OF_ATTEMPTS, attempt);
             }
         }
     }

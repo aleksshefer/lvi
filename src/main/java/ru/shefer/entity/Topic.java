@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Set;
 
@@ -27,5 +28,11 @@ public class Topic {
     private Set<Post> posts;
 
     public Topic() {
+    }
+
+    public String customToString() {
+        return "Название темы: " + name +
+                ", автор: " + author.getName() + author.getSurname() +
+                ", дата создания: " + new SimpleDateFormat("dd.MM.yyyy").format(creationDate);
     }
 }

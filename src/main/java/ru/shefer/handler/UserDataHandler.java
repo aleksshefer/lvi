@@ -15,7 +15,8 @@ public class UserDataHandler {
     private final CommandLineOutputService outputService;
 
 
-    public UserDataHandler(UserService userService, CommandLineOutputService outputService) {
+    public UserDataHandler(UserService userService,
+                           CommandLineOutputService outputService) {
         this.userService = userService;
         this.outputService = outputService;
     }
@@ -26,7 +27,7 @@ public class UserDataHandler {
         if (userByEmail.isPresent()) {
             return userByEmail.get();
         } else {
-            outputService.writeMessage(NO_SUCH_USER_EXIST);
+            outputService.printMessage(NO_SUCH_USER_EXIST);
             return null;
         }
     }
